@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Lint (ruff)
+        run: ruff check .
+      
+      - name: Type Check (mypy)
+        run: mypy app.py common config.py database handlers keyboards middlewares plugins utils tests
+
+      - name: Apply Migrations
+        run: alembic upgrade head
+
+      - name: Syntax Check
+        run: python -m compileall -q app.py common config.py database handlers keyboards middlewares plugins utils alembic tests
+
+      - name: Run Tests
+        run: pytest -q

@@ -1,0 +1,32 @@
+# virtual env
+venv/
+.venv/
+
+# python cache
+__pycache__/
+*.pyc
+
+# env variables
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# database
+db.sqlite3
+
+.ruff_cache
+
+.tmp_uploads/
+
+# Local runtime files
+*.sqlite3
+*.sqlite
+*.db
+*.log

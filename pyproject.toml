@@ -1,0 +1,12 @@
+[tool.ruff]
+line-length = 130
+target-version = "py311"
+exclude = ["venv", ".ruff_cache", "__pycache__", "docs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+ignore = ["E712", "E501", "UP046"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
