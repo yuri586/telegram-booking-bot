@@ -154,7 +154,7 @@ Profiles задают нишу и демо-контент.
 ### 1. Создать виртуальное окружение
 
 ```bash
-python3 -m venv venv
+python -m venv venv
 source venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
@@ -199,7 +199,9 @@ LOG_LEVEL=INFO
 ### 3. Применить миграции
 
 ```bash
-alembic upgrade head
+python -m alembic upgrade head
+
+Важно: Alembic читает `DB_URL` из переменных окружения. Файл `.env` при запуске Alembic не загружается автоматически; для нестандартной базы передавайте `DB_URL=...` прямо в команде.
 ```
 
 ### 4. Проверить smoke-сборку
@@ -246,7 +248,7 @@ SEED_DEMO=0 DEMO_PROFILE=photographer ENABLE_BOOKING=1 python app.py
 Пример миграции для отдельной базы:
 
 ```bash
-DB_URL=sqlite+aiosqlite:///./psychologist.sqlite3 alembic upgrade head
+DB_URL=sqlite+aiosqlite:///./psychologist.sqlite3 python -m alembic upgrade head
 ```
 
 ## Переменные окружения
@@ -272,14 +274,14 @@ DB_URL=sqlite+aiosqlite:///./psychologist.sqlite3 alembic upgrade head
 Применить миграции:
 
 ```bash
-alembic upgrade head
+python -m alembic upgrade head
 ```
 
 Создать новую миграцию после изменения моделей:
 
 ```bash
 alembic revision --autogenerate -m "describe change"
-alembic upgrade head
+python -m alembic upgrade head
 ```
 
 ## Проверки
@@ -333,6 +335,8 @@ utils/
 [Telegram Bot Template](https://github.com/yuri586/telegram-bot-template) показывает общую архитектуру.
 
 Отдельная установка base template не требуется: этот репозиторий запускается самостоятельно.
+
+В репозитории также присутствуют унаследованные от base template плагины `leads`, `shop` и `groups`: они сохранены для демонстрации модульности платформы и отключены в booking mode через `ENABLE_LEADS=0`, `ENABLE_SHOP=0`, `ENABLE_GROUPS=0`.
 
 Booking Bot показывает конкретный коммерческий сценарий записи клиентов: услуги, слоты, записи, админские сценарии, уведомления и демо-профили.
 
